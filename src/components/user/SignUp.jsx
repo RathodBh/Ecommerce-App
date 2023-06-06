@@ -2,8 +2,9 @@ import React, { useState } from "react";
 import "../../assets/css/signup.css";
 import { TextField } from "@mui/material";
 import { toast } from "react-toastify";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
+import { axiosRes } from "../../utils/functions";
 
 const initialValue = {
   first_name: "",
@@ -16,6 +17,8 @@ const initialValue = {
 
 const SignUp = () => {
   const [data, setData] = useState(initialValue);
+
+  const navigate = useNavigate();
 
   const handleChange = (e, label) => {
     setData({ ...data, [label]: e.target.value });
@@ -30,14 +33,18 @@ const SignUp = () => {
       }
     }
 
-    const postData = await axios.post(
-      `${process.env.REACT_APP_BACK_URL}/user/signup`,
-      data
-    );
+    const postData = await axios
+      .post(`${process.env.REACT_APP_BACK_URL}/user/signup`, data)
+      .catch((err) => {
+        toast.error(`${axiosRes(err)}`);
+        return;
+      });
 
-    postData?.status == 200
-      ? toast.success("Registration successfully")
-      : toast.success("Something went wrong");
+    console.log("postData", postData);
+    if (postData?.status === 200) {
+      toast.success("Registration successfully");
+      navigate("/login");
+    }
   };
 
   return (

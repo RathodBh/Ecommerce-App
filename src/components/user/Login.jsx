@@ -4,6 +4,7 @@ import { TextField } from "@mui/material";
 import { toast } from "react-toastify";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
+import { axiosRes, getToken, setToken } from "../../utils/functions";
 
 const initialValue = {
   email: "",
@@ -25,14 +26,17 @@ const Login = () => {
     const postData = await axios
       .post(`${process.env.REACT_APP_BACK_URL}/user/login`, data)
       .catch((err) => {
-        toast.error("Invalid username or password");
+        toast.error(`${axiosRes(err)}`);
         return;
       });
 
     if (postData?.status === 200) {
+      setToken(postData?.data);
       toast.success("Login successfully");
       setData(initialValue);
-      navigate("/home");
+
+      getToken();
+      navigate("/");
     }
   };
 

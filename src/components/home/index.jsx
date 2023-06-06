@@ -1,7 +1,14 @@
 import React from "react";
+import Navigation from "../common/Navigation";
+import Slider from "./Slider";
 
 const index = () => {
-  return <div>Home</div>;
+  return (
+    <>
+      <Navigation />
+      <Slider />
+    </>
+  );
 };
 
 export default index;
