@@ -5,21 +5,25 @@ import Login from "../components/user/Login";
 import Home from "../components/home";
 import Products from "../components/product/Products";
 import Private from "./Private.route";
+import Cart from "../components/cart/Cart";
+import Wrapper from "../components/common/Wrapper";
 
 const RoutesFile = () => {
   return (
     <BrowserRouter>
       <Routes>
-        <Route element={<Private />}>
-          <Route path="/cart" element={<Home />} />
+        <Route element={<Wrapper />}>
+          <Route element={<Private />}>
+            <Route path="/cart" element={<Cart />} />
+          </Route>
+          <Route element={<Private reverse={true} />}>
+            <Route path="/register" element={<SignUp />} />
+            <Route path="/login" element={<Login />} />
+          </Route>
+          <Route path="/" element={<Home />} />
+          <Route path="/products" element={<Products />} />
+          <Route path="*" element={<Home />} />
         </Route>
-        <Route element={<Private reverse={true} />}>
-          <Route path="/register" element={<SignUp />} />
-          <Route path="/login" element={<Login />} />
-        </Route>
-        <Route path="/" element={<Home />} />
-        <Route path="/products" element={<Products />} />
-        <Route path="*" element={<Home />} />
       </Routes>
     </BrowserRouter>
   );

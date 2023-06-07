@@ -5,7 +5,6 @@ import Slider from "./Slider";
 const index = () => {
   return (
     <>
-      <Navigation />
       <Slider />
     </>
   );
