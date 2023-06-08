@@ -30,9 +30,14 @@ const Navigation = () => {
     navigate("/");
   };
 
+  const gotoAccount = () => {
+    handleClose();
+    navigate("/user/address");
+  };
+
   return (
     <>
-      <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
+      <nav className="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
         <div className="container-fluid">
           <Link className="navbar-brand" to="/">
             Ecommerce store
@@ -71,9 +76,7 @@ const Navigation = () => {
                 <>
                   <div className="d-flex align-items-center gap-3">
                     <Link to="/cart">
-                      <ShoppingCartIcon
-                        style={{ color: "white" }}
-                      />
+                      <ShoppingCartIcon style={{ color: "white" }} />
                     </Link>
                     <Link to="/order">
                       <RequestQuoteIcon
@@ -122,7 +125,7 @@ const Navigation = () => {
         }}
       >
         <MenuItem onClick={handleClose}>Profile</MenuItem>
-        <MenuItem onClick={handleClose}>My account</MenuItem>
+        <MenuItem onClick={gotoAccount}>Address</MenuItem>
         <MenuItem onClick={() => setOpen(true)}>Logout</MenuItem>
       </Menu>
     </>

@@ -57,3 +57,21 @@ export const delReq = async (url, data, token = false) => {
 
   return response && response?.data;
 };
+
+export const patchReq = async (url, data, token = false) => {
+  let headersObj = {};
+
+  if (token) {
+    headersObj["auth-token"] = getToken();
+  }
+  const response = await axios
+    .patch(`${process.env.REACT_APP_BACK_URL}${url}`, data, {
+      headers: headersObj,
+    })
+    .catch((err) => {
+      console.log(axiosRes(err), `for ${url}`);
+      return;
+    });
+
+  return response && response?.data;
+};

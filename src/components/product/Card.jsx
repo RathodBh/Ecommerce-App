@@ -49,9 +49,9 @@ const Card = ({ product: p, cart, cartId }) => {
               : p?.description}
           </p>
           <div className="d-flex gap-3 align-items-center">
-            <h6 className="mb-0">&#8377;{p?.price}</h6>
+            <h6 className="mb-0">&#8377;{p?.price.toLocaleString("en-IN")}</h6>
             <span className="text-secondary" style={{ fontSize: "15px" }}>
-              <s> &#8377; {p?.cross_price}</s>
+              <s> &#8377; {p?.cross_price.toLocaleString("en-IN")}</s>
             </span>
             <span className="text-success" style={{ fontSize: "12px" }}>
               <b>

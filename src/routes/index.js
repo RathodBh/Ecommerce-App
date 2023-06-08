@@ -7,6 +7,7 @@ import Products from "../components/product/Products";
 import Private from "./Private.route";
 import Cart from "../components/cart/Cart";
 import Wrapper from "../components/common/Wrapper";
+import UserAddresses from "../components/user/UserAddresses";
 
 const RoutesFile = () => {
   return (
@@ -15,6 +16,7 @@ const RoutesFile = () => {
         <Route element={<Wrapper />}>
           <Route element={<Private />}>
             <Route path="/cart" element={<Cart />} />
+            <Route path="/user/address" element={<UserAddresses />} />
           </Route>
           <Route element={<Private reverse={true} />}>
             <Route path="/register" element={<SignUp />} />

@@ -1,24 +1,10 @@
 import { createAsyncThunk, createSlice, current } from "@reduxjs/toolkit";
-import { delReq, getReq, postReq } from "../../requests";
+import { delReq, getReq, patchReq, postReq } from "../../requests";
 
 const initialState = {
-  cartDataVal: [],
   cartProductIDVal: [],
   cartIDVal: 0,
 };
-
-export const cartData = createAsyncThunk(
-  "cart/cartData",
-  async (args, { rejectWithValue }) => {
-    try {
-      const [response] = await getReq("/cart/data", true);
-      return response?.products;
-    } catch (err) {
-      rejectWithValue(err.response.data);
-      console.log(err);
-    }
-  }
-);
 
 export const cartProductID = createAsyncThunk(
   "cart/cartProductID",
@@ -64,9 +50,22 @@ export const deleteCart = createAsyncThunk(
   async (args, { rejectWithValue }) => {
     try {
       const response = await delReq("/cart/delete", args, true);
-      console.log(
-        "🚀 ~ file: cartSlice.js:72 ~ response?.prod_id:",
-        response?.prod_id
+      return response && response?.prod_id;
+    } catch (err) {
+      rejectWithValue(err.response.data);
+      console.log(err);
+    }
+  }
+);
+
+export const updateQuantity = createAsyncThunk(
+  "cart/updateQuantity",
+  async (args, { rejectWithValue }) => {
+    try {
+      const response = await patchReq(
+        `/cart/quantity/${args.id}`,
+        { quantity: args.quantity },
+        true
       );
       return response && response?.prod_id;
     } catch (err) {
@@ -80,13 +79,6 @@ export const cartSlice = createSlice({
   name: "cart",
   initialState,
   extraReducers: (builder) => {
-    builder.addCase(cartData.fulfilled, (state, action) => {
-      return {
-        ...state,
-        cartDataVal: action.payload,
-      };
-    });
-
     builder.addCase(getCartID.fulfilled, (state, action) => {
       return {
         ...state,
@@ -113,17 +105,21 @@ export const cartSlice = createSlice({
       const updatedCartID = current(state.cartProductIDVal).filter(
         (id) => id !== parseInt(action.payload)
       );
-
-      const updateCart = current(state.cartDataVal)?.filter(
-        (cur) => cur?.id !== parseInt(action.payload)
-      );
-
       return {
         ...state,
-        cartDataVal: updateCart,
         cartProductIDVal: updatedCartID,
       };
     });
+
+    // builder.addCase(updateQuantity.fulfilled, (state, action) => {
+    //   const updatedCartID = current(state.cartProductIDVal).filter(
+    //     (id) => id !== parseInt(action.payload)
+    //   );
+    //   return {
+    //     ...state,
+    //     cartProductIDVal: updatedCartID,
+    //   };
+    // });
   },
 });
 
