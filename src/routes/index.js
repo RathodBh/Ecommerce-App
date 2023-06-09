@@ -8,6 +8,7 @@ import Private from "./Private.route";
 import Cart from "../components/cart/Cart";
 import Wrapper from "../components/common/Wrapper";
 import UserAddresses from "../components/user/UserAddresses";
+import Order from "../components/order/Order";
 
 const RoutesFile = () => {
   return (
@@ -24,7 +25,7 @@ const RoutesFile = () => {
           </Route>
           <Route path="/" element={<Home />} />
           <Route path="/products" element={<Products />} />
-          <Route path="*" element={<Home />} />
+          <Route path="*" element={<Order />} />
         </Route>
       </Routes>
     </BrowserRouter>

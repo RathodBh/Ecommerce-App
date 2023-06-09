@@ -2,33 +2,43 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   cartProductID,
+  delAllCart,
   deleteCart,
   getCartID,
   updateQuantity,
 } from "../../store/slices/cartSlice";
 import { productsWithCategory } from "../../store/slices/productSlice";
 import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Confirm from "../common/Confirm";
 import Address from "../common/Address";
+import { addOrder } from "../../store/slices/orderSlice";
+import { toast } from "react-toastify";
 
 const Cart = () => {
   const [orderStatus, setOrderStatus] = useState(false);
   const [open, setOpen] = useState(false);
-  const [total, setTotal] = useState({
-    price: 0,
-    cross_price: 0,
-  });
+  const [add, setAdd] = useState(0);
 
   const { cartProductIDVal, cartIDVal } = useSelector((state) => state.cart);
   const { products } = useSelector((state) => state.product);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   useEffect(() => {
     dispatch(cartProductID());
     dispatch(getCartID());
     dispatch(productsWithCategory());
   }, []);
+
+  useEffect(() => {
+    if (add !== 0) {
+      //place order
+      placeOrder();
+      toast.success("order placed successfully...")
+      navigate("/order")
+    }
+  }, [add]);
 
   const removeItem = (id) => {
     dispatch(deleteCart({ prod_id: id, cart_id: cartIDVal }));
@@ -53,6 +63,12 @@ const Cart = () => {
     setOrderStatus(true);
   };
 
+  const placeOrder = async () => {
+    await dispatch(addOrder({ add_id: add, data: orderArr }));
+    await dispatch(delAllCart({ cart_id: cartIDVal }));
+    await dispatch(productsWithCategory());
+  };
+
   let total_price = products
     ?.filter((cur) => cartProductIDVal?.includes(cur?.id))
     .reduce(
@@ -69,6 +85,17 @@ const Cart = () => {
       0
     );
 
+  let orderArr = products
+    ?.filter((cur) => cartProductIDVal?.includes(cur?.id))
+    .map((cur) => {
+      return {
+        prod_id: cur.id,
+        price: cur.price,
+        cross_price: cur.cross_price,
+        total: cur.price * cur?.carts[0]?.product_cart?.quantity,
+        quantity: cur?.carts[0]?.product_cart?.quantity,
+      };
+    });
   return (
     <>
       <div className="container-fluid my-5">
@@ -91,23 +118,6 @@ const Cart = () => {
                     products
                       ?.filter((cur) => cartProductIDVal?.includes(cur?.id))
                       ?.map((p) => {
-                        console.log("🚀 ~ file: Cart.jsx:81 ~ Cart ~ p:", p);
-                        // setTotal((prev) => {
-                        //   return {
-                        //     price:
-                        //       prev?.price +
-                        //       p?.price * p?.carts[0]?.product_cart?.quantity,
-                        //     cross_price:
-                        //       prev?.cross_price +
-                        //       p?.cross_price *
-                        //         p?.carts[0]?.product_cart?.quantity,
-                        //         ...prev
-                        //   };
-                        // });
-                        // total_cross_price +=
-                        //   p?.cross_price * p?.carts[0]?.product_cart?.quantity;
-                        // total_price +=
-                        //   p?.price * p?.carts[0]?.product_cart?.quantity;
                         return (
                           <div className="d-flex row border" key={p?.id}>
                             <div className="col-3 d-flex justify-content-center p-2">
@@ -251,8 +261,13 @@ const Cart = () => {
               )}
 
             {/* show address and address form  */}
-            {orderStatus && <Address title={"Delivery Addresses"} radio={true}/>}
-
+            {orderStatus && (
+              <Address
+                title={"Delivery Addresses"}
+                radio={true}
+                setAdd={setAdd}
+              />
+            )}
           </div>
           <div className="col-lg-4 col-12 position-relative">
             <div

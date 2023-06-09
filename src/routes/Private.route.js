@@ -6,4 +6,4 @@ const Private = ({ reverse = false }) => {
   token = reverse ? !token : token;
   return token ? <Outlet /> : <Navigate to="/" />;
 };
-export default Private;
+export default Private; 

@@ -12,10 +12,6 @@ export default function Modal({ open, setOpen, msg, action }) {
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down("md"));
 
-  // const handleClickOpen = () => {
-  //   setOpen(true);
-  // };
-
   const handleClose = () => {
     setOpen(false);
   };

@@ -58,6 +58,19 @@ export const deleteCart = createAsyncThunk(
   }
 );
 
+export const delAllCart = createAsyncThunk(
+  "cart/delAllCart",
+  async (args, { rejectWithValue }) => {
+    try {
+      const response = await delReq("/cart/delete_all", args, true);
+      return response && response?.cart_id;
+    } catch (err) {
+      rejectWithValue(err.response.data);
+      console.log(err);
+    }
+  }
+);
+
 export const updateQuantity = createAsyncThunk(
   "cart/updateQuantity",
   async (args, { rejectWithValue }) => {
@@ -108,6 +121,12 @@ export const cartSlice = createSlice({
       return {
         ...state,
         cartProductIDVal: updatedCartID,
+      };
+    });
+    builder.addCase(delAllCart.fulfilled, (state, action) => {
+      return {
+        ...state,
+        cartProductIDVal: [],
       };
     });
 
