@@ -3,6 +3,7 @@ import { useDispatch } from "react-redux";
 import { addToCart, deleteCart } from "../../store/slices/cartSlice";
 import { getToken } from "../../utils/functions";
 import { toast } from "react-toastify";
+import { Link } from "react-router-dom";
 
 const Card = ({ product: p, cart, cartId }) => {
   const dispatch = useDispatch();
@@ -29,26 +30,30 @@ const Card = ({ product: p, cart, cartId }) => {
   return (
     <div className="col-lg-3 col-md-4 col-sm-6 col-12">
       <div className="card m-1 border">
-        <img
-          src={p?.img_url}
-          className="card-img-top border"
-          alt="..."
-          style={{
-            width: "100%",
-            aspectRatio: "1/1",
-            objectFit: "cover",
-          }}
-        />
+        <Link to={`/products/${p?.id}`}>
+          <img
+            src={p?.img_url}
+            className="card-img-top border"
+            alt="..."
+            style={{
+              width: "100%",
+              aspectRatio: "1/1",
+              objectFit: "cover",
+            }}
+          />
+        </Link>
         <div className="card-body">
-          <h5 className="card-title">
-            {p?.name?.length > 19 ? p?.name.substr(0, 19) + "..." : p?.name}
-          </h5>
+          <Link to={`/products/${p?.id}`} className="text-decoration-none">
+            <h5 className="card-title ">
+              {p?.name?.length > 19 ? p?.name.substr(0, 19) + "..." : p?.name}
+            </h5>
+          </Link>
           <p className="card-text">
             {p?.description?.length > 50
               ? p?.description.substr(0, 50) + "..."
               : p?.description}
           </p>
-          <div className="d-flex gap-3 align-items-center">
+          <div className="d-flex gap-3 align-items-center flex-wrap">
             <h6 className="mb-0">&#8377;{p?.price.toLocaleString("en-IN")}</h6>
             <span className="text-secondary" style={{ fontSize: "15px" }}>
               <s> &#8377; {p?.cross_price.toLocaleString("en-IN")}</s>

@@ -35,8 +35,8 @@ const Cart = () => {
     if (add !== 0) {
       //place order
       placeOrder();
-      toast.success("order placed successfully...")
-      navigate("/order")
+      toast.success("order placed successfully...");
+      navigate("/order");
     }
   }, [add]);
 
@@ -121,21 +121,25 @@ const Cart = () => {
                         return (
                           <div className="d-flex row border" key={p?.id}>
                             <div className="col-3 d-flex justify-content-center p-2">
-                              <img
-                                src={p?.img_url}
-                                alt=""
-                                className="w-100"
-                                style={{
-                                  maxWidth: "200px",
-                                  aspectRatio: "1/1",
-                                  objectFit: "cover",
-                                }}
-                              />
+                              <Link to={`/products/${p?.id}`}>
+                                <img
+                                  src={p?.img_url}
+                                  alt=""
+                                  className="w-100"
+                                  style={{
+                                    maxWidth: "200px",
+                                    aspectRatio: "1/1",
+                                    objectFit: "cover",
+                                  }}
+                                />
+                              </Link>
                             </div>
                             <div className="col-8">
                               <div className="py-3 h-100">
                                 <h6 className="d-flex gap-2 align-items-center">
-                                  <span>{p?.name}</span>
+                                  <Link to={`/products/${p?.id}`} className="text-decoration-none">
+                                    <span>{p?.name}</span>
+                                  </Link>
                                   <span
                                     className="rounded-pill border p-1 px-2"
                                     style={{ fontSize: "14px" }}

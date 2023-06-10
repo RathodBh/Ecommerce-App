@@ -3,8 +3,7 @@ import { getReq, postReq } from "../../requests";
 
 const initialState = {
   orderID: [],
-  lastOrderVal: [],
-  lastOrderAdd: {},
+  allOrdersVal:[]
 };
 
 export const addOrder = createAsyncThunk(
@@ -20,11 +19,13 @@ export const addOrder = createAsyncThunk(
   }
 );
 
-export const lastOrder = createAsyncThunk(
-  "order/lastOrder",
+
+
+export const allOrders = createAsyncThunk(
+  "order/allOrders",
   async (args, { rejectWithValue }) => {
     try {
-      const response = await getReq("/order/last_order", true);
+      const response = await getReq("/order/all_orders", true);
       return response;
     } catch (err) {
       rejectWithValue(err.response.data);
@@ -37,11 +38,11 @@ export const orderSlice = createSlice({
   name: "order",
   initialState,
   extraReducers: (builder) => {
-    builder.addCase(lastOrder.fulfilled, (state, action) => {
+    
+    builder.addCase(allOrders.fulfilled, (state, action) => {
       return {
         ...state,
-        lastOrderVal: action.payload.products,
-        lastOrderAdd: action.payload.address[0],
+        allOrdersVal: action.payload?.userOrder,
       };
     });
   },

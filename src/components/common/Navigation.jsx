@@ -110,8 +110,6 @@ const Navigation = () => {
         action={logout}
       />
       <Menu
-        id="demo-positioned-menu"
-        aria-labelledby="demo-positioned-button"
         anchorEl={anchorEl}
         open={openMenu}
         onClose={handleClose}
@@ -124,7 +122,7 @@ const Navigation = () => {
           horizontal: "left",
         }}
       >
-        <MenuItem onClick={handleClose}>Profile</MenuItem>
+        {/* <MenuItem onClick={handleClose}>Profile</MenuItem> */}
         <MenuItem onClick={gotoAccount}>Address</MenuItem>
         <MenuItem onClick={() => setOpen(true)}>Logout</MenuItem>
       </Menu>

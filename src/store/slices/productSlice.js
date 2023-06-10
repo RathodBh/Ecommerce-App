@@ -3,6 +3,7 @@ import { getReq } from "../../requests";
 
 const initialState = {
   products: [],
+  productOne: {},
 };
 
 export const productsWithCategory = createAsyncThunk(
@@ -10,6 +11,19 @@ export const productsWithCategory = createAsyncThunk(
   async (args, { rejectWithValue }) => {
     try {
       const response = await getReq("/product/with_category");
+      return response;
+    } catch (err) {
+      rejectWithValue(err.response.data);
+      console.log(err);
+    }
+  }
+);
+
+export const singleProduct = createAsyncThunk(
+  "product/singleProduct",
+  async (args, { rejectWithValue }) => {
+    try {
+      const response = await getReq(`/product/${args}`);
       return response;
     } catch (err) {
       rejectWithValue(err.response.data);
@@ -28,7 +42,12 @@ export const productReducer = createSlice({
         products: action.payload,
       };
     });
-
+    builder.addCase(singleProduct.fulfilled, (state, action) => {
+      return {
+        ...state,
+        productOne: action.payload,
+      };
+    });
   },
 });
 

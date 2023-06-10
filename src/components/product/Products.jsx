@@ -14,6 +14,7 @@ import { names } from "../../store/slices/categorySlice";
 import { productsWithCategory } from "../../store/slices/productSlice";
 import Card from "./Card";
 import { getToken } from "../../utils/functions";
+import { Link } from "react-router-dom";
 
 const Products = () => {
   const [cat, setCat] = useState("");
@@ -39,8 +40,6 @@ const Products = () => {
     getToken() && setCart(cartProductIDVal);
   }, [cartProductIDVal]);
 
-  
-
   return (
     <>
       <div className="container my-5">
@@ -59,20 +58,21 @@ const Products = () => {
             />
           </div>
         </div>
-        <div className="d-flex flex-wrap row">
+        <div className="d-flex flex-wrap row align-items-stretch">
           {products?.length > 0 &&
             products?.map((p) => {
+              console.log("pppppppppppp",p)
               if (
                 cat === "" ||
                 p?.categories?.map((c) => c?.name).includes(cat)
               )
                 return (
-                  <Card
-                    key={p?.id}
-                    product={p}
-                    cart={cart}
-                    cartId={cartIDVal}
-                  />
+                    <Card
+                      key={p?.id}
+                      product={p}
+                      cart={cart}
+                      cartId={cartIDVal}
+                    />
                 );
             })}
         </div>
