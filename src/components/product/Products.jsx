@@ -43,7 +43,7 @@ const Products = () => {
   return (
     <>
       <div className="container my-5">
-        <div className="my-2 d-flex justify-content-between row">
+        <div className="my-2 justify-content-between row">
           <div className="col-12">
             <Autocomplete
               disablePortal
@@ -58,10 +58,9 @@ const Products = () => {
             />
           </div>
         </div>
-        <div className="d-flex flex-wrap row align-items-stretch">
+        <div className="flex-wrap row align-items-stretch">
           {products?.length > 0 &&
             products?.map((p) => {
-              console.log("pppppppppppp",p)
               if (
                 cat === "" ||
                 p?.categories?.map((c) => c?.name).includes(cat)

@@ -6,11 +6,22 @@ import Confirm from "./Confirm";
 import { toast } from "react-toastify";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import RequestQuoteIcon from "@mui/icons-material/RequestQuote";
+import { useDispatch, useSelector } from "react-redux";
+import { cartProductID } from "../../store/slices/cartSlice";
 
 const Navigation = () => {
+  const { cartProductIDVal } = useSelector((state) => state.cart);
+
   const [anchorEl, setAnchorEl] = useState(null);
   const [open, setOpen] = useState(false);
+
+  const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    dispatch(cartProductID());
+    dispatch(cartProductID());
+  }, []);
 
   const openMenu = Boolean(anchorEl);
 
@@ -35,6 +46,7 @@ const Navigation = () => {
     navigate("/user/address");
   };
 
+  cartProductID && console.log("--", cartProductIDVal);
   return (
     <>
       <nav className="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
@@ -75,8 +87,16 @@ const Navigation = () => {
               {getToken() ? (
                 <>
                   <div className="d-flex align-items-center gap-3">
-                    <Link to="/cart">
+                    <Link to="/cart" className="position-relative">
                       <ShoppingCartIcon style={{ color: "white" }} />
+                      {cartProductID && cartProductIDVal?.length > 0 && (
+                        <span
+                          class="badge badge-pill badge-light rounded-circle bg-danger position-absolute "
+                          style={{ top: "-22%", left: "65%" }}
+                        >
+                          {cartProductIDVal?.length}
+                        </span>
+                      )}
                     </Link>
                     <Link to="/order">
                       <RequestQuoteIcon

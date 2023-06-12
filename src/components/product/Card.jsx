@@ -1,12 +1,13 @@
 import React from "react";
 import { useDispatch } from "react-redux";
-import { addToCart, deleteCart } from "../../store/slices/cartSlice";
+import { addToCart, cartProductID } from "../../store/slices/cartSlice";
 import { getToken } from "../../utils/functions";
 import { toast } from "react-toastify";
 import { Link } from "react-router-dom";
 
 const Card = ({ product: p, cart, cartId }) => {
   const dispatch = useDispatch();
+
   const handleAddCart = async () => {
     const token = getToken();
     if (!token) {
@@ -15,21 +16,12 @@ const Card = ({ product: p, cart, cartId }) => {
     }
     const prod_id = p?.id;
     dispatch(addToCart({ prod_id, cart_id: cartId }));
-  };
-
-  const handleDelCart = async () => {
-    const token = getToken();
-    if (!token) {
-      toast.error("Login required");
-      return;
-    }
-    const prod_id = p?.id;
-    dispatch(deleteCart({ prod_id, cart_id: cartId }));
+    dispatch(cartProductID());
   };
 
   return (
-    <div className="col-lg-3 col-md-4 col-sm-6 col-12">
-      <div className="card m-1 border">
+    <div className="col-lg-3 col-md-4 col-sm-6 col-12 position-relative">
+      <div className="card m-1 border h-100">
         <Link to={`/products/${p?.id}`}>
           <img
             src={p?.img_url}
@@ -53,7 +45,7 @@ const Card = ({ product: p, cart, cartId }) => {
               ? p?.description.substr(0, 50) + "..."
               : p?.description}
           </p>
-          <div className="d-flex gap-3 align-items-center flex-wrap">
+          <div className="d-flex gap-2 align-items-center flex-wrap">
             <h6 className="mb-0">&#8377;{p?.price.toLocaleString("en-IN")}</h6>
             <span className="text-secondary" style={{ fontSize: "15px" }}>
               <s> &#8377; {p?.cross_price.toLocaleString("en-IN")}</s>
@@ -68,15 +60,18 @@ const Card = ({ product: p, cart, cartId }) => {
               </b>
             </span>
           </div>
-          {cart?.includes(p?.id) ? (
-            <button className="btn btn-warning" onClick={handleDelCart}>
-              Remove
-            </button>
-          ) : (
-            <button className="btn btn-primary" onClick={handleAddCart}>
+          {/* {cart?.includes(p?.id) ? (
+            <button className="btn btn-warning" onClick={handleAddCart}>
               Add to cart
             </button>
-          )}
+          ) : ( */}
+          <button
+            className="btn btn-primary "
+            onClick={handleAddCart}
+          >
+            Add to cart
+          </button>
+          {/* )} */}
         </div>
       </div>
     </div>

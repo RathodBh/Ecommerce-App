@@ -17,7 +17,7 @@ import { toast } from "react-toastify";
 const ProductDetails = () => {
   const { id } = useParams();
   const { productOne } = useSelector((state) => state.product);
-  const { cartProductIDVal, cartIDVal } = useSelector((state) => state.cart);
+  const { cartIDVal } = useSelector((state) => state.cart);
 
   const dispatch = useDispatch();
 
@@ -38,16 +38,6 @@ const ProductDetails = () => {
     dispatch(cartProductID());
   };
 
-  const handleDelCart = async () => {
-    const token = getToken();
-    if (!token) {
-      toast.error("Login required");
-      return;
-    }
-    const prod_id = productOne?.id;
-    dispatch(deleteCart({ prod_id, cart_id: cartIDVal }));
-    dispatch(cartProductID());
-  };
   return (
     <>
       <div className="container mt-4    ">
@@ -68,7 +58,7 @@ const ProductDetails = () => {
             <h3>
               {productOne?.name}{" "}
               <span
-                style={{ fontSize: "12px",background:"gainsboro" }}
+                style={{ fontSize: "12px", background: "gainsboro" }}
                 className="px-2 rounded-pill border p-1"
               >
                 {productOne?.brand_name}
@@ -98,21 +88,9 @@ const ProductDetails = () => {
             </div>
 
             <div className="mt-5">
-              {cartProductIDVal &&
-              cartProductIDVal?.includes(productOne?.id) ? (
-                <>
-                  <button className="btn btn-warning" onClick={handleDelCart}>
-                    Remove
-                  </button>
-                  <Link to="/cart" className="btn btn-outline-info mx-2">
-                    View cart
-                  </Link>
-                </>
-              ) : (
-                <button className="btn btn-primary" onClick={handleAddCart}>
-                  Add to cart
-                </button>
-              )}
+              <button className="btn btn-primary" onClick={handleAddCart}>
+                Add to cart
+              </button>
             </div>
           </div>
         </div>
